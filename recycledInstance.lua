@@ -47,10 +47,10 @@ end
 function recycledInstance.destroy(self: recycledInstance, instance: Instance, parent: Instance?)
 	self.rate -= 1
 	setPositionIfApplicable(instance, self.offset)
+	table.insert(self.cache, instance)
 	if parent then
 		instance.Parent = parent
 	end
-	table.insert(self.cache, instance)
 end
 
 
