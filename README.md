@@ -18,6 +18,6 @@ FYI :destroy() will only set the CFrame of BaseParts, or call :MoveTo() on a mod
 ```lua
 :prepare(cacheSize: number) --> pre-emptively expands the cache in advance
 :clone() --> returns an instance by either recycling an old one, or if that is not possible, cloning one
-:destroy() --> recycles an instance for later use
-:optimize() --> trims the cache for excess instances that are not needed based on the current demand
+:destroy(instance: Instance, parent: Instance?) --> recycles an instance for later use
+:optimize(permittedExecss: number) --> trims the cache for excess instances that are not needed based on the current demand
 ```
