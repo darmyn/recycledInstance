@@ -23,11 +23,9 @@ function recycledInstance.clone(self: recycledInstance): Instance
 	local availableInstance = availableInstances[1]
 	self.rate += 1
 	if availableInstance then
-		print("recycled")
 		table.remove(availableInstances, 1)
 		return availableInstance
 	else
-		print("cloned")
 		return self.prefab:Clone()
 	end
 end
