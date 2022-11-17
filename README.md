@@ -2,7 +2,7 @@ When building a game, there are several scenarios where you may need to allocate
 
 ### Enter: RecycledInstance
 
-A RecycledInstance wraps your prefabricated instance with it's own custom :Clone() and :Destroy() methods. At first, cloning an instance is exactly the same as usual, but once you destroy the instance (for example, the bullet's lifespan has ended) instead of deleting the instance it is put into a cache in order to be re-used the next time you call :Clone(). This alliviates the overhead from creating and destroying instances at high rates.
+A RecycledInstance wraps your prefabricated instance with it's own custom :clone() and :destroy() methods. At first, cloning an instance is exactly the same as usual, but once you destroy the instance (for example, the bullet's lifespan has ended) instead of deleting the instance it is put into a cache in order to be re-used the next time you call :clone(). This alliviates the overhead from creating and destroying instances at high rates.
 
 To give you a better understanding of what is going on under the hood, I will continue with the gun example. Let's say you are making a FPS. In your game, each player will have weapons. Let's assume all weapons use the same bullet prefab. You would create a recycledInstance to wrap said bullet prefab. Then, when people join your game and start shooting the gun, the cache will dynamically expand until there is enough recycled copies of the instance so that new instances never need to be created again.
 
