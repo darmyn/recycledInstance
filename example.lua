@@ -17,6 +17,6 @@ while true do
 		task.wait(.5)
 		myRecycledInstance:destroy(newInstance, cache)
 	end)
-	myRecycledInstance:optimize()
-	task.wait(math.random(0.03, .25) * .01)
+	--myRecycledInstance:optimize()
+	task.wait(math.random(3, 25) * .01)
 end
