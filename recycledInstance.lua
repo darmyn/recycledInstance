@@ -19,9 +19,9 @@ function recycledInstance.new(prefab: Instance)
 end
 
 function recycledInstance.clone(self: recycledInstance): Instance
+	self.rate += 1
 	local availableInstances = self.cache
 	local availableInstance = availableInstances[1]
-	self.rate += 1
 	if availableInstance then
 		table.remove(availableInstances, 1)
 		return availableInstance
