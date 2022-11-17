@@ -12,4 +12,4 @@ If you are dynamically expanding the cache, there is an optional method called :
 
 Either way, if you choose to :optimize(), even though the cache may have to re-grow in size by cloning the actual instance again, it will soon return back to re-using instances, meaning it's still faster than using the default :Clone() and :Destroy() methods.
 
-FYI :destroy() will only set the CFrame of BaseParts, or call :MoveTo() on a model when recycling instances. It will not re-parent the instance. This is arguably faster. However the :destroy() method has an optional paramater to set the parent in case you want to recycle something that doesn't have the ability to be positioned in the world.
+FYI :destroy() will only set the CFrame of BaseParts, or call :MoveTo() on a model when recycling instances. It will not re-parent the instance. This is arguably faster. However the :destroy() method has an optional paramater to set the parent in case you want to recycle something that doesn't have the ability to be positioned in the world, or you want to keep your bullets organized.
