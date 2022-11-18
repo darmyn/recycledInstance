@@ -57,13 +57,13 @@ end
 ]]
 
 function recycledInstance.optimize(self: recycledInstance)
-	local cache = self.cache
-	for i = 1, #cache do
-		local selectedInstance = cache[i]
-		if os.clock() - selectedInstance.timestamp >= self.expiration then
-			table.remove(cache, i)
-		end
-	end
+    local cache = self.cache
+    for _ = 1, #cache do
+        local selectedInstance = cache[i]
+        if os.clock() - selectedInstance.timestamp >= self.expiration then
+            table.remove(cache, 1)
+        end
+    end
 end
 
 function recycledInstance.destroy(self: recycledInstance, instance: Instance, parent: Instance?)
