@@ -1,4 +1,5 @@
 local recycledInstance = {}
+recycledInstance.consideredOld = 20 -- seconds of innactivity
 recycledInstance.offset = Vector3.new(10000, 0, 0)
 recycledInstance.__index = recycledInstance
 
@@ -13,29 +14,39 @@ end
 function recycledInstance.new(prefab: Instance)
 	local self = setmetatable({}, recycledInstance)
 	self.prefab = prefab
-	self.cache = {}
+	self.cache = {} :: {[number]: {instance: Instance, timestamp: number}}
 	self.rate = 0
 	return self
 end
 
+function recycledInstance.prepare(self: recycledInstance, cacheSize: number)
+	for _ = 1, cacheSize do
+		table.insert(self.cache, {
+			instance = self.prefab:Clone(),
+			timestamp = os.clock()
+		})
+	end
+end
+
 function recycledInstance.clone(self: recycledInstance): Instance
-	self.rate += 1
 	local availableInstances = self.cache
-	local availableInstance = availableInstances[1]
+	local availableInstance = availableInstances[#availableInstances]
+	self.rate += 1
 	if availableInstance then
-		table.remove(availableInstances, 1)
-		return availableInstance
+		table.remove(availableInstances)
+		return availableInstance.instance
 	else
 		return self.prefab:Clone()
 	end
 end
 
+--[[ OLD optimize
 function recycledInstance.optimize(self: recycledInstance, permittedExcess: number)
 	local cache = self.cache
 	local lenCache = #cache
-	local rate = self.rate
-	if lenCache > rate + permittedExcess then
-		for i = lenCache, lenCache - rate, -1 do
+	local rate = self.rate + permittedExcess
+	if lenCache > rate then
+		for i = lenCache, lenCache + rate do
 			if cache[i] then
 				cache[i]:Destroy()
 				table.remove(cache, i)
@@ -43,14 +54,28 @@ function recycledInstance.optimize(self: recycledInstance, permittedExcess: numb
 		end
 	end
 end
+]]
+
+function recycledInstance.optimize(self: recycledInstance)
+	local cache = self.cache
+	for i = 1, #cache do
+		local selectedInstance = cache[i]
+		if os.clock() - selectedInstance.timestamp >= self.consideredOld then
+			table.remove(cache, i)
+		end
+	end
+end
 
 function recycledInstance.destroy(self: recycledInstance, instance: Instance, parent: Instance?)
 	self.rate -= 1
 	setPositionIfApplicable(instance, self.offset)
-	table.insert(self.cache, instance)
 	if parent then
 		instance.Parent = parent
 	end
+	table.insert(self.cache, {
+		instance = instance,
+		timestamp = os.clock()
+	})
 end
 
 
