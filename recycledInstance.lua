@@ -59,9 +59,11 @@ end
 function recycledInstance.optimize(self: recycledInstance)
     local cache = self.cache
     for _ = 1, #cache do
-        local selectedInstance = cache[i]
+        local selectedInstance = cache[1]
         if os.clock() - selectedInstance.timestamp >= self.expiration then
             table.remove(cache, 1)
+	else
+	    return
         end
     end
 end
