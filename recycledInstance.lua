@@ -1,5 +1,5 @@
 local recycledInstance = {}
-recycledInstance.consideredOld = 20 -- seconds of innactivity
+recycledInstance.expiration = 20 -- seconds of innactivity
 recycledInstance.offset = Vector3.new(10000, 0, 0)
 recycledInstance.__index = recycledInstance
 
@@ -60,7 +60,7 @@ function recycledInstance.optimize(self: recycledInstance)
 	local cache = self.cache
 	for i = 1, #cache do
 		local selectedInstance = cache[i]
-		if os.clock() - selectedInstance.timestamp >= self.consideredOld then
+		if os.clock() - selectedInstance.timestamp >= self.expiration then
 			table.remove(cache, i)
 		end
 	end
